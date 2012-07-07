@@ -1,7 +1,7 @@
-package com.fande.botdefense.Worlds 
+package com.fande.imperative.Worlds 
 {
-	import com.fande.botdefense.Entities.Enemies.Enemy;
-	import com.fande.botdefense.Entities.Player;
+	import com.fande.imperative.Entities.Enemies.Enemy;
+	import com.fande.imperative.Entities.Player;
 	import flash.display.BitmapData;
 	import flash.geom.Point;
 	import net.flashpunk.Entity;
@@ -9,7 +9,7 @@ package com.fande.botdefense.Worlds
 	import net.flashpunk.World;
 	import net.flashpunk.utils.Input;
 	import net.flashpunk.FP;
-	import com.fande.botdefense.Entities.Level.LevelTerrain;
+	import com.fande.imperative.Entities.Level.Level;
 	
 	/**
 	 * ...
@@ -18,15 +18,17 @@ package com.fande.botdefense.Worlds
 	public class GameWorld extends BaseWorld
 	{
 		private var square:Entity;
+		[Embed(source = "../Assets/Levels/level1.oel", mimeType = "application/octet-stream")] private static const DEFAULT_MAP:Class;
 		
 		public function GameWorld() 
 		{
 			trace("GameWorld Constructor");
 		}
 		
-		override public function begin():void {
-			add(new Player(new Point(FP.screen.width/2, FP.screen.height/2)));
-			add(new LevelTerrain());
+		override public function begin():void 
+		{
+			var level:Level = Level(add(new Level(DEFAULT_MAP)));
+			add(new Player(level.getPlayerStart()));
 			super.begin();
 		}
 		

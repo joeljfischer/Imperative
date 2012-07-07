@@ -1,4 +1,4 @@
-package com.fande.botdefense.Entities.Enemies 
+package com.fande.imperative.Entities.Enemies 
 {
 	import net.flashpunk.Entity;
 	import net.flashpunk.graphics.Image;

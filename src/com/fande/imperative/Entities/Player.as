@@ -1,4 +1,4 @@
-package com.fande.botdefense.Entities 
+package com.fande.imperative.Entities 
 {
 	import flash.geom.Point;
 	import net.flashpunk.Entity;

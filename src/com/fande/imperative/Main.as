@@ -1,7 +1,7 @@
-package com.fande.botdefense {
+package com.fande.imperative {
 	import net.flashpunk.Engine;
 	import net.flashpunk.FP;
-	import com.fande.botdefense.Worlds.GameWorld;
+	import com.fande.imperative.Worlds.GameWorld;
 	
 	/**
 	 * ...
