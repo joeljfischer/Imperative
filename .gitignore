@@ -2,3 +2,5 @@
 .flexProperties
 .settings/
 .project
+bin/*
+obj/*
