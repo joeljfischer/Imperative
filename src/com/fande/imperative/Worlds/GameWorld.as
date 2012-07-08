@@ -17,6 +17,8 @@ package com.fande.imperative.Worlds
 	 */
 	public class GameWorld extends BaseWorld
 	{
+		private var _level:Level;
+		
 		private var square:Entity;
 		[Embed(source = "../Assets/Levels/level1.oel", mimeType = "application/octet-stream")] private static const DEFAULT_MAP:Class;
 		
@@ -27,14 +29,18 @@ package com.fande.imperative.Worlds
 		
 		override public function begin():void 
 		{
-			var level:Level = Level(add(new Level(DEFAULT_MAP)));
-			add(new Player(level.getPlayerStart()));
+			_level = Level(add(new Level(DEFAULT_MAP)));
+			add(new Player(level.getPlayerStart(), level.gridSize));
 			super.begin();
 		}
 		
 		override public function update():void {
 			
 			super.update();
+		}
+		
+		public function get level():Level {
+			return _level;
 		}
 		
 	}

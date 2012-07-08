@@ -1,11 +1,13 @@
 package com.fande.imperative.Entities 
 {
+	import com.fande.imperative.Worlds.GameWorld;
 	import flash.geom.Point;
 	import net.flashpunk.Entity;
 	import net.flashpunk.graphics.Image;
 	import net.flashpunk.utils.Input;
 	import net.flashpunk.utils.Key;
 	import net.flashpunk.FP;
+	import net.flashpunk.World;
 	
 	/**
 	 * ...
@@ -16,20 +18,24 @@ package com.fande.imperative.Entities
 		[Embed(source = "../../../../../img/player.png")] private const PLAYER_GRAPHIC:Class;
 		
 		public var image:Image;
-		private var _v:Point;
 		
-		public function Player(p:Point) 
+		private var _velocity:Point;
+		private var gridSize:uint;
+		
+		public function Player(start:Point, gridSize:uint) 
 		{
-			this.x = p.x;
-			this.y = p.y;
+			this.x = start.x;
+			this.y = start.y;
 			
-			_v = new Point();
+			_velocity = new Point();
 			
 			image = new Image(PLAYER_GRAPHIC);
 			this.graphic = image;
 			
-			setHitbox(16, 16);
+			setHitbox(image.width, image.height);
 			type = "player";
+			
+			this.gridSize = gridSize;
 		}
 		
 		override public function update():void {
@@ -47,17 +53,40 @@ package com.fande.imperative.Entities
 			if (Input.check(Key.LEFT)) movement.x--;
 			if (Input.check(Key.RIGHT)) movement.x++;
 			
-			_v.x = 100 * FP.elapsed * movement.x;
-			_v.y = 100 * FP.elapsed * movement.y;
+			_velocity.x = 100 * FP.elapsed * movement.x;
+			_velocity.y = 100 * FP.elapsed * movement.y;
 		}
 		
 		private function updateCollision():void {
-			x += _v.x;
-			y += _v.y;
+			x += _velocity.x;
 			
-			if (this.collide("level", x, y)) {
-				trace("collision");
+			if (collide("level", x, y)) {
+				//Moving right
+				if (FP.sign(_velocity.x) > 0) {
+					_velocity.x = 0;
+					x = Math.floor(x / gridSize) * gridSize + gridSize - width;
+					
+				} else { //Moving left
+					_velocity.x = 0;
+					x = Math.floor(x / gridSize) * gridSize + gridSize;
+				}
 			}
+			
+			
+			y += _velocity.y;
+			
+			if (collide("level", x, y)) {
+				//Moving down
+				if (FP.sign(_velocity.y) > 0) {
+					_velocity.y = 0;
+					y = Math.floor(y / gridSize) * gridSize + gridSize - height;
+					
+				} else { //Moving up
+					_velocity.y = 0;
+					y = Math.floor(y / gridSize) * gridSize + gridSize;
+				}
+			}
+			
 		}
 	}
 }

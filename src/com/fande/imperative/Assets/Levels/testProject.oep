@@ -16,7 +16,7 @@
     <Width>32000</Width>
     <Height>24000</Height>
   </LevelMaximumSize>
-  <Filename>E:\Users\Joel\Dropbox\Programming\BotDefense\src\com\fande\botdefense\Assets\Levels\testProject.oep</Filename>
+  <Filename>E:\Users\Joel\Dropbox\Programming\Imperative\src\com\fande\imperative\Assets\Levels\testProject.oep</Filename>
   <AngleMode>Degrees</AngleMode>
   <CameraEnabled>false</CameraEnabled>
   <CameraSize>
@@ -25,9 +25,24 @@
   </CameraSize>
   <ExportCameraPosition>false</ExportCameraPosition>
   <LevelValueDefinitions>
-    <ValueDefinition xsi:type="StringValueDefinition" Name="LevelName" Default="Level1" MaxChars="-1" MultiLine="false" />
+    <ValueDefinition xsi:type="StringValueDefinition" Name="levelname" Default="Level1" MaxChars="-1" MultiLine="false" />
+    <ValueDefinition xsi:type="IntValueDefinition" Name="gridsize" Default="32" Min="0" Max="128" ShowSlider="true" />
+    <ValueDefinition xsi:type="IntValueDefinition" Name="tilesize" Default="32" Min="0" Max="128" ShowSlider="true" />
   </LevelValueDefinitions>
   <LayerDefinitions>
+    <LayerDefinition xsi:type="GridLayerDefinition">
+      <Name>GridLayer</Name>
+      <Grid>
+        <Width>32</Width>
+        <Height>32</Height>
+      </Grid>
+      <ScrollFactor>
+        <X>1</X>
+        <Y>1</Y>
+      </ScrollFactor>
+      <Color A="255" R="0" G="0" B="0" />
+      <ExportMode>Rectangles</ExportMode>
+    </LayerDefinition>
     <LayerDefinition xsi:type="TileLayerDefinition">
       <Name>TileLayer</Name>
       <Grid>
