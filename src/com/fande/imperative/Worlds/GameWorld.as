@@ -27,15 +27,13 @@ package com.fande.imperative.Worlds
 			trace("GameWorld Constructor");
 		}
 		
-		override public function begin():void 
-		{
+		override public function begin():void {
 			_level = Level(add(new Level(DEFAULT_MAP)));
 			add(new Player(level.getPlayerStart(), level.gridSize));
 			super.begin();
 		}
 		
 		override public function update():void {
-			
 			super.update();
 		}
 		

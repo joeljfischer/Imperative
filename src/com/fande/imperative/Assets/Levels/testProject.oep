@@ -5,8 +5,8 @@
   <BackgroundColor A="255" R="192" G="192" B="192" />
   <GridColor A="255" R="0" G="0" B="0" />
   <LevelDefaultSize>
-    <Width>640</Width>
-    <Height>480</Height>
+    <Width>800</Width>
+    <Height>600</Height>
   </LevelDefaultSize>
   <LevelMinimumSize>
     <Width>640</Width>
@@ -65,6 +65,19 @@
         <X>1</X>
         <Y>1</Y>
       </ScrollFactor>
+    </LayerDefinition>
+    <LayerDefinition xsi:type="GridLayerDefinition">
+      <Name>DestructableLayer</Name>
+      <Grid>
+        <Width>32</Width>
+        <Height>32</Height>
+      </Grid>
+      <ScrollFactor>
+        <X>1</X>
+        <Y>1</Y>
+      </ScrollFactor>
+      <Color A="255" R="0" G="0" B="255" />
+      <ExportMode>Rectangles</ExportMode>
     </LayerDefinition>
   </LayerDefinitions>
   <Tilesets>

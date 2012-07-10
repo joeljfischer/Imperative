@@ -28,11 +28,11 @@ package com.fande.imperative.Entities.Level
 		
 		public function Level(xml:Class) 
 		{
-			tiles = new Tilemap(EXAMPLE_TILESET, 640, 480, 32, 32);
+			tiles = new Tilemap(EXAMPLE_TILESET, 800, 600, 32, 32);
 			graphic = tiles;
 			layer = 1;
 			
-			grid = new Grid(640, 480, 32, 32, 0, 0);
+			grid = new Grid(800, 600, 32, 32, 0, 0);
 			mask = grid;
 			
 			type = "level";

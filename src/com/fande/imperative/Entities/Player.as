@@ -15,7 +15,7 @@ package com.fande.imperative.Entities
 	 */
 	public class Player extends Entity 
 	{
-		[Embed(source = "../../../../../img/player.png")] private const PLAYER_GRAPHIC:Class;
+		[Embed(source = "../../../../../img/player36.png")] private const PLAYER_GRAPHIC:Class;
 		
 		public var image:Image;
 		
@@ -52,9 +52,10 @@ package com.fande.imperative.Entities
 			if (Input.check(Key.DOWN)) movement.y++;
 			if (Input.check(Key.LEFT)) movement.x--;
 			if (Input.check(Key.RIGHT)) movement.x++;
+			trace(movement);
 			
-			_velocity.x = 100 * FP.elapsed * movement.x;
-			_velocity.y = 100 * FP.elapsed * movement.y;
+			_velocity.x = 180 * FP.elapsed * movement.x;
+			_velocity.y = 180 * FP.elapsed * movement.y;
 		}
 		
 		private function updateCollision():void {
@@ -64,7 +65,7 @@ package com.fande.imperative.Entities
 				//Moving right
 				if (FP.sign(_velocity.x) > 0) {
 					_velocity.x = 0;
-					x = Math.floor(x / gridSize) * gridSize + gridSize - width;
+					x = Math.floor((x + width) / gridSize) * gridSize - width;
 					
 				} else { //Moving left
 					_velocity.x = 0;
@@ -79,7 +80,7 @@ package com.fande.imperative.Entities
 				//Moving down
 				if (FP.sign(_velocity.y) > 0) {
 					_velocity.y = 0;
-					y = Math.floor(y / gridSize) * gridSize + gridSize - height;
+					y = Math.floor((y + height) / gridSize) * gridSize - height;
 					
 				} else { //Moving up
 					_velocity.y = 0;
