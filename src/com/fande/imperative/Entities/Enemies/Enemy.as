@@ -3,6 +3,7 @@ package com.fande.imperative.Entities.Enemies
 	import net.flashpunk.Entity;
 	import net.flashpunk.graphics.Image;
 	import net.flashpunk.FP;
+	import com.fande.imperative.Assets.Gfx.Sprites;
 	
 	/**
 	 * ...
@@ -10,10 +11,8 @@ package com.fande.imperative.Entities.Enemies
 	 */
 	public class Enemy extends Entity {
 		
-		[Embed(source = "../../../../../../img/Image1.png")] public const ENEMY_GRAPHIC:Class;
-		
 		public function Enemy() {
-			this.graphic = new Image(ENEMY_GRAPHIC);
+			this.graphic = new Image(Sprites.TEMP_ENEMY);
 			this.x = FP.rand(FP.screen.width);
 			this.y = FP.rand(FP.screen.height);
 			type = "enemy";

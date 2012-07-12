@@ -5,7 +5,8 @@ package com.fande.imperative.Entities.Level
 	import net.flashpunk.Entity;
 	import net.flashpunk.graphics.Tilemap;
 	import net.flashpunk.masks.Grid;
-	
+	import net.flashpunk.FP;
+	import com.fande.imperative.Assets.Gfx.TileMaps;
 	
 	/**
 	 * ...
@@ -13,8 +14,6 @@ package com.fande.imperative.Entities.Level
 	 */
 	public class Level extends Entity 
 	{
-		[Embed(source = "../../../../../../img/tileset/floortiles.png")] private const EXAMPLE_TILESET:Class;
-		
 		public var xmlData:XML;
 		
 		private var tiles:Tilemap;
@@ -28,7 +27,7 @@ package com.fande.imperative.Entities.Level
 		
 		public function Level(xml:Class) 
 		{
-			tiles = new Tilemap(EXAMPLE_TILESET, 800, 600, 32, 32);
+			tiles = new Tilemap(TileMaps.TEMP_TILEMAPS, 800, 600, 32, 32);
 			graphic = tiles;
 			layer = 1;
 			
@@ -65,9 +64,7 @@ package com.fande.imperative.Entities.Level
 		}
 		
 		private function loadLevel(xml:Class):void {
-			var rawData:ByteArray = new xml();
-			var dataString:String = rawData.readUTFBytes(rawData.length);
-			xmlData = new XML(dataString);
+			xmlData = FP.getXML(xml);
 			
 			_levelName = String(xmlData.@levelname);
 			_levelWidth = int(xmlData.@width);

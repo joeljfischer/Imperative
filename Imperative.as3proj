@@ -68,8 +68,8 @@
   <!-- Assets to embed into the output SWF -->
   <library>
     <asset path="img\player.png" />
-    <asset path="img\Image1.png" />
     <asset path="img\tileset\floortiles.png" />
+    <asset path="img\sprites\Image1.png" />
   </library>
   <!-- Class files to compile (other referenced classes will automatically be included) -->
   <compileTargets>

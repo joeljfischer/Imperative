@@ -8,6 +8,7 @@ package com.fande.imperative.Entities
 	import net.flashpunk.utils.Key;
 	import net.flashpunk.FP;
 	import net.flashpunk.World;
+	import com.fande.imperative.Assets.Gfx.Sprites;
 	
 	/**
 	 * ...
@@ -15,24 +16,22 @@ package com.fande.imperative.Entities
 	 */
 	public class Player extends Entity 
 	{
-		[Embed(source = "../../../../../img/player36.png")] private const PLAYER_GRAPHIC:Class;
-		
 		public var image:Image;
 		
 		private var _velocity:Point;
 		private var gridSize:uint;
 		
-		public function Player(start:Point, gridSize:uint) 
+		public function Player(start:Point, gridSize:uint)
 		{
 			this.x = start.x;
 			this.y = start.y;
 			
 			_velocity = new Point();
 			
-			image = new Image(PLAYER_GRAPHIC);
+			image = new Image(Sprites.PLAYER_IMAGE);
 			this.graphic = image;
 			
-			setHitbox(image.width, image.height);
+			setHitboxTo(image);
 			type = "player";
 			
 			this.gridSize = gridSize;
@@ -87,7 +86,6 @@ package com.fande.imperative.Entities
 					y = Math.floor(y / gridSize) * gridSize + gridSize;
 				}
 			}
-			
 		}
 	}
 }

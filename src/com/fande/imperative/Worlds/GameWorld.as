@@ -10,6 +10,7 @@ package com.fande.imperative.Worlds
 	import net.flashpunk.utils.Input;
 	import net.flashpunk.FP;
 	import com.fande.imperative.Entities.Level.Level;
+	import com.fande.imperative.Assets.Gfx.TileMaps;
 	
 	/**
 	 * ...
@@ -18,9 +19,7 @@ package com.fande.imperative.Worlds
 	public class GameWorld extends BaseWorld
 	{
 		private var _level:Level;
-		
-		private var square:Entity;
-		[Embed(source = "../Assets/Levels/level1.oel", mimeType = "application/octet-stream")] private static const DEFAULT_MAP:Class;
+		//private var square:Entity;
 		
 		public function GameWorld() 
 		{
@@ -28,7 +27,7 @@ package com.fande.imperative.Worlds
 		}
 		
 		override public function begin():void {
-			_level = Level(add(new Level(DEFAULT_MAP)));
+			_level = Level(add(new Level(TileMaps.XML_LEVEL)));
 			add(new Player(level.getPlayerStart(), level.gridSize));
 			super.begin();
 		}
