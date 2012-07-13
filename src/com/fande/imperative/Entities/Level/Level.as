@@ -27,11 +27,19 @@ package com.fande.imperative.Entities.Level
 		
 		public function Level(xml:Class) 
 		{
-			tiles = new Tilemap(TileMaps.TEMP_TILEMAPS, 800, 600, 32, 32);
+			xmlData = FP.getXML(xml);
+			
+			_levelName = String(xmlData.@levelname);
+			width = int(xmlData.@width);
+			height = int(xmlData.@height);
+			_tileSize = int(xmlData.@tilesize);
+			_gridSize = int(xmlData.@gridsize);
+			
+			tiles = new Tilemap(TileMaps.TEMP_TILEMAPS, width, height, _tileSize, _tileSize);
 			graphic = tiles;
 			layer = 1;
 			
-			grid = new Grid(800, 600, 32, 32, 0, 0);
+			grid = new Grid(width, height, _gridSize, _gridSize);
 			mask = grid;
 			
 			type = "level";
@@ -64,14 +72,6 @@ package com.fande.imperative.Entities.Level
 		}
 		
 		private function loadLevel(xml:Class):void {
-			xmlData = FP.getXML(xml);
-			
-			_levelName = String(xmlData.@levelname);
-			_levelWidth = int(xmlData.@width);
-			_levelHeight = int(xmlData.@height);
-			_tileSize = int(xmlData.@tilesize);
-			_gridSize = int(xmlData.@gridsize);
-			
 			var dataList:XMLList = xmlData.TileLayer.tile;
 			var dataElement:XML;
 			

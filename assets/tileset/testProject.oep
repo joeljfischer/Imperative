@@ -16,7 +16,7 @@
     <Width>32000</Width>
     <Height>24000</Height>
   </LevelMaximumSize>
-  <Filename>E:\Users\Joel\Dropbox\Programming\Imperative\src\com\fande\imperative\Assets\Levels\testProject.oep</Filename>
+  <Filename>E:\Users\Joel\Dropbox\Programming\Imperative\assets\tileset\testProject.oep</Filename>
   <AngleMode>Degrees</AngleMode>
   <CameraEnabled>false</CameraEnabled>
   <CameraSize>
@@ -83,7 +83,7 @@
   <Tilesets>
     <Tileset>
       <Name>TempTileset</Name>
-      <FilePath>..\..\..\..\..\..\img\tileset\floortiles.png</FilePath>
+      <FilePath>floortiles.png</FilePath>
       <TileSize>
         <Width>32</Width>
         <Height>32</Height>
@@ -94,14 +94,14 @@
   <EntityDefinitions>
     <EntityDefinition Name="PlayerShip" Limit="1" ResizableX="false" ResizableY="false" Rotatable="true" RotateIncrement="5">
       <Size>
-        <Width>16</Width>
-        <Height>16</Height>
+        <Width>36</Width>
+        <Height>36</Height>
       </Size>
       <Origin>
         <X>0</X>
         <Y>0</Y>
       </Origin>
-      <ImageDefinition DrawMode="Image" ImagePath="..\..\..\..\..\..\img\player.png" Tiled="false">
+      <ImageDefinition DrawMode="Image" ImagePath="..\sprites\player36.png" Tiled="false">
         <RectColor A="255" R="255" G="0" B="0" />
       </ImageDefinition>
       <ValueDefinitions />
@@ -116,7 +116,7 @@
         <X>0</X>
         <Y>0</Y>
       </Origin>
-      <ImageDefinition DrawMode="Image" ImagePath="..\..\..\..\..\..\img\Image1.png" Tiled="false">
+      <ImageDefinition DrawMode="Image" ImagePath="..\sprites\Image1.png" Tiled="false">
         <RectColor A="255" R="255" G="0" B="0" />
       </ImageDefinition>
       <ValueDefinitions />

@@ -20,11 +20,13 @@ package com.fande.imperative.Entities
 		
 		private var _velocity:Point;
 		private var gridSize:uint;
+		private var levelSize:Point;
 		
-		public function Player(start:Point, gridSize:uint)
+		public function Player(start:Point, gridSize:uint, levelSize:Point)
 		{
 			this.x = start.x;
 			this.y = start.y;
+			this.levelSize = levelSize;
 			
 			_velocity = new Point();
 			
@@ -40,6 +42,7 @@ package com.fande.imperative.Entities
 		override public function update():void {
 			updateMovement();
 			updateCollision();
+			checkBounds();
 			
 			super.update();
 		}
@@ -86,6 +89,10 @@ package com.fande.imperative.Entities
 					y = Math.floor(y / gridSize) * gridSize + gridSize;
 				}
 			}
+		}
+		
+		private function checkBounds():void {
+			FP.clampInRect(this, 0, 0, levelSize.x - width, levelSize.y - height);
 		}
 	}
 }

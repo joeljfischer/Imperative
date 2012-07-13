@@ -19,25 +19,35 @@ package com.fande.imperative.Worlds
 	public class GameWorld extends BaseWorld
 	{
 		private var _level:Level;
-		//private var square:Entity;
+		private var _player:Player;
 		
-		public function GameWorld() 
-		{
+		public function GameWorld() {
 			trace("GameWorld Constructor");
 		}
 		
 		override public function begin():void {
 			_level = Level(add(new Level(TileMaps.XML_LEVEL)));
-			add(new Player(level.getPlayerStart(), level.gridSize));
+			_player = new Player(level.getPlayerStart(), level.gridSize, new Point(level.width, level.height));
+			add(player);
+			
 			super.begin();
 		}
 		
 		override public function update():void {
+			//Deal with the camera, follow the player
+			camera.x = player.x - FP.halfWidth;
+			camera.y = player.y - FP.halfHeight;
+			FP.clampInRect(camera, 0, 0, level.halfWidth, level.halfHeight);
+			
 			super.update();
 		}
 		
 		public function get level():Level {
 			return _level;
+		}
+		
+		public function get player():Player {
+			return _player;
 		}
 		
 	}
