@@ -1,12 +1,12 @@
 <?xml version="1.0"?>
 <project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
   <OgmoVersion>2.0.0.40</OgmoVersion>
-  <Name>New Project</Name>
+  <Name>Imperative Project</Name>
   <BackgroundColor A="255" R="192" G="192" B="192" />
   <GridColor A="255" R="0" G="0" B="0" />
   <LevelDefaultSize>
-    <Width>800</Width>
-    <Height>600</Height>
+    <Width>640</Width>
+    <Height>480</Height>
   </LevelDefaultSize>
   <LevelMinimumSize>
     <Width>640</Width>

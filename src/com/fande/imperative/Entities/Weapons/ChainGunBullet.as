@@ -1,4 +1,5 @@
 package com.fande.imperative.Entities.Weapons {
+	
 	import net.flashpunk.Entity;
 	
 	/**
@@ -10,7 +11,5 @@ package com.fande.imperative.Entities.Weapons {
 		public function ChainGunBullet() {
 			
 		}
-		
 	}
-
 }

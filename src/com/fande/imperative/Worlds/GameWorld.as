@@ -37,7 +37,7 @@ package com.fande.imperative.Worlds
 			//Deal with the camera, follow the player
 			camera.x = player.x - FP.halfWidth;
 			camera.y = player.y - FP.halfHeight;
-			FP.clampInRect(camera, 0, 0, level.halfWidth, level.halfHeight);
+			FP.clampInRect(camera, 0, 0, level.width - FP.width, level.height - FP.height);
 			
 			super.update();
 		}
@@ -49,7 +49,5 @@ package com.fande.imperative.Worlds
 		public function get player():Player {
 			return _player;
 		}
-		
 	}
-
 }

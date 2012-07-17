@@ -10,7 +10,5 @@ package com.fande.imperative.Entities.Weapons {
 		public function Missile() {
 			
 		}
-		
 	}
-
 }
