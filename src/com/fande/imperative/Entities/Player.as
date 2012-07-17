@@ -79,17 +79,14 @@ package com.fande.imperative.Entities
 			
 			if (isPrimaryFiring) {
 				//Activate the Primary Fire Weapon
-				trace("Primary Weapon Firing");
 			}
 			
 			if (isSecondaryFiring) {
 				//Activate the Secondary Fire Weapon
-				trace("Secondary Weapon Firing");
 			}
 			
 			if (actionActivated) {
-				//Locate a nearby object that you can use the action on
-				trace("Action Trigger Firing");
+				//Use a stored powerup...or something, haven't decided
 			}
 			
 			super.update();
@@ -121,13 +118,17 @@ package com.fande.imperative.Entities
 		 * Check each of the defined keys for the player and set appropriate vars
 		 */
 		private function updateKeys():void {
-			//Movement
+			//Reset the facing direction
+			facing.x = 0;
+			facing.y = 0;
+			
+			//Movement Keys
 			if (Input.check("Up")) facing.y--;
 			if (Input.check("Down")) facing.y++;
 			if (Input.check("Left")) facing.x--;
 			if (Input.check("Right")) facing.x++;
 			
-			//Special Movement
+			//Special Movement Keys
 			if (Input.check("Boost")) {
 				isBoosting = true;
 			} else {
@@ -151,7 +152,7 @@ package com.fande.imperative.Entities
 				isSecondaryFiring = false;
 			}
 			
-			//Action
+			//Action Key(s)
 			if (Input.pressed("Action")) {
 				actionActivated = true;
 			} else {
@@ -166,6 +167,8 @@ package com.fande.imperative.Entities
 		private function updateMovement():void {
 			_velocity.x = 180 * FP.elapsed * facing.x;
 			_velocity.y = 180 * FP.elapsed * facing.y;
+			trace("x " + facing.x);
+			trace("y " + facing.y);
 		}
 		
 		/**
