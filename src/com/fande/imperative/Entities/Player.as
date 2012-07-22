@@ -16,8 +16,9 @@ package com.fande.imperative.Entities
 	 */
 	public class Player extends Entity 
 	{
-		private static const PLAYER_ACCELERATION:int = 120; //Pixels/Second
-		private static const PLAYER_MAX_SPEED:uint = 200; //Pixels/Second
+		private static const PLAYER_ACCELERATION:int = 360; //Pixels per second
+		private static const PLAYER_DECELERATION:int = 360;
+		private static const PLAYER_MAX_SPEED:uint = 300; //Pixels per second
 		
 		private var image:Image;
 		
@@ -165,10 +166,47 @@ package com.fande.imperative.Entities
 		 * Update the movement of the player based on pressed keys, acceleration, and velocity
 		 */
 		private function updateMovement():void {
-			_velocity.x = 180 * FP.elapsed * facing.x;
-			_velocity.y = 180 * FP.elapsed * facing.y;
-			trace("x " + facing.x);
-			trace("y " + facing.y);
+			//Get the current acceleration
+			_acceleration.x = PLAYER_ACCELERATION * facing.x * FP.elapsed;
+			_acceleration.y = PLAYER_ACCELERATION * facing.y * FP.elapsed;
+			
+			//If the player has released the Left/Right Keys
+			if (facing.x == 0) {
+				//And the Player is travelling in the x directions
+				if (FP.sign(_velocity.x) > 0) {
+					//Decelerate the player towards 0 velocity
+					_velocity.x = FP.approach(_velocity.x, 0, (PLAYER_DECELERATION * FP.elapsed));
+				} else if (FP.sign(_velocity.x) < 0) {
+					_velocity.x = FP.approach(_velocity.x, 0, (PLAYER_DECELERATION * FP.elapsed));
+				}
+			} else { //Player is pressing the button
+				//Accelerate the player in the X direction
+				_velocity.x += _acceleration.x;
+			}
+			
+			if (facing.y == 0) {
+				if (FP.sign(_velocity.y) > 0) {
+					_velocity.y = FP.approach(_velocity.y, 0, PLAYER_ACCELERATION);
+				} else if (FP.sign(_velocity.y) < 0) {
+					_velocity.y = FP.approach(_velocity.y, 0, PLAYER_ACCELERATION);
+				}
+			} else {
+				_velocity.y += _acceleration.y;
+			}
+			
+			//Keep the player's velocity clamped within the max speed
+			_velocity.x = FP.clamp(_velocity.x, -PLAYER_MAX_SPEED, PLAYER_MAX_SPEED);
+			_velocity.y = FP.clamp(_velocity.y, -PLAYER_MAX_SPEED, PLAYER_MAX_SPEED);
+			
+			
+			if (isSliding) {
+				
+			}
+			
+			if (isBoosting && !isSliding) {
+				_velocity.x *= 2;
+				_velocity.y *= 2;
+			}
 		}
 		
 		/**
@@ -177,7 +215,7 @@ package com.fande.imperative.Entities
 		private function updateCollision():void {
 			
 			//X plane collision
-			x += _velocity.x;
+			x += _velocity.x * FP.elapsed;
 			if (collide("level", x, y)) {
 				//Moving right
 				if (FP.sign(_velocity.x) > 0) {
@@ -193,7 +231,7 @@ package com.fande.imperative.Entities
 			}
 			
 			//Y plane collision
-			y += _velocity.y;
+			y += _velocity.y * FP.elapsed;
 			if (collide("level", x, y)) {
 				//Moving down
 				if (FP.sign(_velocity.y) > 0) {
