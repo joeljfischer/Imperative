@@ -198,14 +198,12 @@ package com.fande.imperative.Entities
 			_velocity.x = FP.clamp(_velocity.x, -PLAYER_MAX_SPEED, PLAYER_MAX_SPEED);
 			_velocity.y = FP.clamp(_velocity.y, -PLAYER_MAX_SPEED, PLAYER_MAX_SPEED);
 			
-			
 			if (isSliding) {
 				
 			}
 			
 			if (isBoosting && !isSliding) {
-				_velocity.x *= 2;
-				_velocity.y *= 2;
+				
 			}
 		}
 		
@@ -221,11 +219,12 @@ package com.fande.imperative.Entities
 				if (FP.sign(_velocity.x) > 0) {
 					//Stop the vehicle in that direction
 					_velocity.x = 0;
+					_acceleration.x = 0;
 					//Move the ship back to inside the bounds
 					x = Math.floor((x + width) / gridSize) * gridSize - width;
-					
 				} else { //Moving left
 					_velocity.x = 0;
+					_acceleration.x = 0;
 					x = Math.floor(x / gridSize) * gridSize + gridSize;
 				}
 			}
@@ -236,10 +235,12 @@ package com.fande.imperative.Entities
 				//Moving down
 				if (FP.sign(_velocity.y) > 0) {
 					_velocity.y = 0;
+					_acceleration.y = 0;
 					y = Math.floor((y + height) / gridSize) * gridSize - height;
 					
 				} else { //Moving up
 					_velocity.y = 0;
+					_acceleration.y = 0;
 					y = Math.floor(y / gridSize) * gridSize + gridSize;
 				}
 			}
