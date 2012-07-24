@@ -186,9 +186,9 @@ package com.fande.imperative.Entities
 			
 			if (facing.y == 0) {
 				if (FP.sign(_velocity.y) > 0) {
-					_velocity.y = FP.approach(_velocity.y, 0, PLAYER_ACCELERATION);
+					_velocity.y = FP.approach(_velocity.y, 0, (PLAYER_DECELERATION * FP.elapsed));
 				} else if (FP.sign(_velocity.y) < 0) {
-					_velocity.y = FP.approach(_velocity.y, 0, PLAYER_ACCELERATION);
+					_velocity.y = FP.approach(_velocity.y, 0, (PLAYER_DECELERATION * FP.elapsed));
 				}
 			} else {
 				_velocity.y += _acceleration.y;
