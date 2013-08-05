@@ -24,7 +24,7 @@
 		/**
 		 * The FlashPunk major version.
 		 */
-		public static const VERSION:String = "1.6";
+		public static const VERSION:String = "1.7.0";
 		
 		/**
 		 * Width of the game.
@@ -130,7 +130,11 @@
 		public static function get world():World { return _world; }
 		public static function set world(value:World):void
 		{
-			if (_world == value) return;
+			if (_goto) {
+				if (_goto == value) return;
+			} else {
+				if (_world == value) return;
+			}
 			_goto = value;
 		}
 		
@@ -209,7 +213,7 @@
 		/**
 		 * Finds the sign of the provided value.
 		 * @param	value		The Number to evaluate.
-		 * @return	1 if value > 0, -1 if value < 0, and 0 when value == 0.
+		 * @return	1 if value &gt; 0, -1 if value &lt; 0, and 0 when value == 0.
 		 */
 		public static function sign(value:Number):int
 		{
@@ -225,7 +229,13 @@
 		 */
 		public static function approach(value:Number, target:Number, amount:Number):Number
 		{
-			return value < target ? (target < value + amount ? target : value + amount) : (target > value - amount ? target : value - amount);
+			if (value < target - amount) {
+				return value + amount;
+			} else if (value > target + amount) {
+				return value - amount;
+			} else {
+				return target;
+			}
 		}
 		
 		/**
@@ -449,11 +459,15 @@
 		{
 			if (max > min)
 			{
-				value = value < max ? value : max;
-				return value > min ? value : min;
+				if (value < min) return min;
+				else if (value > max) return max;
+				else return value;
+			} else {
+				// Min/max swapped
+				if (value < max) return max;
+				else if (value > min) return min;
+				else return value;
 			}
-			value = value < min ? value : min;
-			return value > max ? value : max;
 		}
 		
 		/**
@@ -524,7 +538,7 @@
 		}
 		
 		/**
-		 * A pseudo-random Number produced using FP's random seed, where 0 <= Number < 1.
+		 * A pseudo-random Number produced using FP's random seed, where 0 &lt;= Number &lt; 1.
 		 */
 		public static function get random():Number
 		{
@@ -534,7 +548,7 @@
 		
 		/**
 		 * Returns a pseudo-random uint.
-		 * @param	amount		The returned uint will always be 0 <= uint < amount.
+		 * @param	amount		The returned uint will always be 0 &lt;= uint &lt; amount.
 		 * @return	The uint.
 		 */
 		public static function rand(amount:uint):uint
@@ -621,6 +635,55 @@
 				case 5: return int(v * 255) << 16 | int(p * 255) << 8 | int(q * 255);
 				default: return 0;
 			}
+		}
+		
+		public static function getColorHue(color:uint):Number
+		{
+			var r:uint = (color >> 16) & 0xFF;
+			var g:uint = (color >> 8) & 0xFF;
+			var b:uint = color & 0xFF;
+			
+			var max:uint = Math.max(r, g, b);
+			var min:uint = Math.min(r, g, b);
+			
+			var hue:uint = 0;
+			 
+			if (max == min) {
+				hue = 0;
+			} else if (max == r) {
+				hue = (60 * (g-b) / (max-min) + 360) % 360;
+			} else if (max == g) {
+				hue = (60 * (b-r) / (max-min) + 120);
+			} else if (max == b) {
+				hue = (60 * (r-g) / (max-min) + 240);
+			}
+			
+			return hue / 360;
+		}
+		
+		public static function getColorSaturation(color:uint):Number
+		{
+			var r:uint = (color >> 16) & 0xFF;
+			var g:uint = (color >> 8) & 0xFF;
+			var b:uint = color & 0xFF;
+			
+			var max:uint = Math.max(r, g, b);
+			var min:uint = Math.min(r, g, b);
+			
+			if (max == 0) {
+				return 0;
+			} else {
+				return (max - min) / max;
+			}
+		}
+		
+		public static function getColorValue(color:uint):Number
+		{
+			var r:uint = (color >> 16) & 0xFF;
+			var g:uint = (color >> 8) & 0xFF;
+			var b:uint = color & 0xFF;
+			
+			return Math.max(r, g, b) / 255;
 		}
 		
 		/**
@@ -749,23 +812,18 @@
 		 * 						complete	Optional completion callback function.
 		 * 						ease		Optional easer function.
 		 * 						tweener		The Tweener to add this Tween to.
+		 * 						delay		A length of time to wait before starting this tween.
 		 * @return	The added MultiVarTween object.
 		 * 
 		 * Example: FP.tween(object, { x: 500, y: 350 }, 2.0, { ease: easeFunction, complete: onComplete } );
 		 */
 		public static function tween(object:Object, values:Object, duration:Number, options:Object = null):MultiVarTween
 		{
-			if (options && options.hasOwnProperty("delay")) {
-				var delay:Number = options.delay;
-				delete options.delay;
-				FP.alarm(delay, function ():void { FP.tween(object, values, duration, options); });
-				return null;
-			}
-			
 			var type:uint = Tween.ONESHOT,
 				complete:Function = null,
 				ease:Function = null,
-				tweener:Tweener = FP.tweener;
+				tweener:Tweener = FP.tweener,
+				delay:Number = 0;
 			if (object is Tweener) tweener = object as Tweener;
 			if (options)
 			{
@@ -774,9 +832,10 @@
 				if (options.hasOwnProperty("complete")) complete = options.complete;
 				if (options.hasOwnProperty("ease")) ease = options.ease;
 				if (options.hasOwnProperty("tweener")) tweener = options.tweener;
+				if (options.hasOwnProperty("delay")) delay = options.delay;
 			}
 			var tween:MultiVarTween = new MultiVarTween(complete, type);
-			tween.tween(object, values, duration, ease);
+			tween.tween(object, values, duration, ease, delay);
 			tweener.addTween(tween);
 			return tween;
 		}
@@ -856,7 +915,14 @@
 		 */
 		public static function sort(object:Object, ascending:Boolean = true):void
 		{
-			if (object is Array || object is Vector.<*>) quicksort(object, 0, object.length - 1, ascending);
+			if (object is Array || object is Vector.<*>)
+			{
+				// Only need to sort the array if it has more than one item.
+				if (object.length > 1)
+				{
+					quicksort(object, 0, object.length - 1, ascending);
+				}
+			}
 		}
 		
 		/**
@@ -867,12 +933,19 @@
 		 */
 		public static function sortBy(object:Object, property:String, ascending:Boolean = true):void
 		{
-			if (object is Array || object is Vector.<*>) quicksortBy(object, 0, object.length - 1, ascending, property);
+			if (object is Array || object is Vector.<*>)
+			{
+				// Only need to sort the array if it has more than one item.
+				if (object.length > 1)
+				{
+					quicksortBy(object, 0, object.length - 1, ascending, property);
+				}
+			}
 		}
 		
 		/** @private Quicksorts the array. */ 
 		private static function quicksort(a:Object, left:int, right:int, ascending:Boolean):void
-		{
+		{		
 			var i:int = left, j:int = right, t:Number,
 				p:* = a[Math.round((left + right) * .5)];
 			if (ascending)
@@ -909,7 +982,7 @@
 		
 		/** @private Quicksorts the array by the property. */ 
 		private static function quicksortBy(a:Object, left:int, right:int, ascending:Boolean, property:String):void
-		{
+		{			
 			var i:int = left, j:int = right, t:Object,
 				p:* = a[Math.round((left + right) * .5)][property];
 			if (ascending)

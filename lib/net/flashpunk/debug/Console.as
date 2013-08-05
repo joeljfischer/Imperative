@@ -37,28 +37,31 @@ package net.flashpunk.debug
 		
 		/**
 		 * Logs data to the console.
-		 * @param	data		The data parameters to log, can be variables, objects, etc. Parameters will be separated by a space (" ").
+		 * @param	data The data parameters to log, can be variables, objects, etc. Parameters will be separated by a space (" ").
 		 */
 		public function log(...data):void
 		{
-			var s:String;
-			if (data.length > 1)
+			var s:String = "";
+			
+			// Iterate through data to build a string.
+			for (var i:uint = 0; i < data.length; i++)
 			{
-				s = "";
-				var i:int = 0;
-				while (i < data.length)
-				{
-					if (i > 0) s += " ";
-					s += data[i ++].toString();
-				}
+				if (i > 0) s += " ";
+				s += (data[i] != null) ? data[i].toString() : "null";
 			}
-			else s = data[0].toString();
+			
+			// Replace newlines with multiple log statements.
 			if (s.indexOf("\n") >= 0)
 			{
 				var a:Array = s.split("\n");
 				for each (s in a) LOG.push(s);
 			}
-			else LOG.push(s);
+			else
+			{
+				LOG.push(s);
+			}
+			
+			// If the log is running, update it.
 			if (_enabled && _sprite.visible) updateLog();
 		}
 		
@@ -181,7 +184,8 @@ package net.flashpunk.debug
 			_logBar = new Rectangle(8, 24, 16, _logHeight - 8);
 			_logBarGlobal = _logBar.clone();
 			_logBarGlobal.y += 40;
-			_logLines = _logHeight / (big ? 16.5 : 8.5);
+			if (big) _logLines = _logHeight / 16.5;
+			else _logLines = _logHeight / 8.5;
 			
 			// The debug text.
 			_sprite.addChild(_debRead);
@@ -656,9 +660,16 @@ package net.flashpunk.debug
 				// Display the log text lines.
 				if (LOG.length)
 				{
-					var i:int = LOG.length > _logLines ? Math.round((LOG.length - _logLines) * _logScroll) : 0,
-						n:int = i + Math.min(_logLines, LOG.length),
+					var i:int = 0,
+						n:int = 0,
 						s:String = "";
+					
+					if (LOG.length > _logLines) {
+						i = Math.round((LOG.length - _logLines) * _logScroll);
+					}
+					
+					n = i + Math.min(_logLines, LOG.length);
+						
 					while (i < n) s += LOG[i ++] + "\n";
 					_logReadText1.text = s;
 				}

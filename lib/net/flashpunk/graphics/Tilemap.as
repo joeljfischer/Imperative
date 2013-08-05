@@ -498,6 +498,11 @@
 		public function get tileHeight():uint { return _tile.height; }
 		
 		/**
+		 * How many tiles the tilemap has.
+		 */
+		public function get tileCount():uint { return _setCount; }
+		
+		/**
 		 * How many columns the tilemap has.
 		 */
 		public function get columns():uint { return _columns; }
@@ -519,8 +524,5 @@
 		/** @private */ private var _setRows:uint;
 		/** @private */ private var _setCount:uint;
 		/** @private */ private var _tile:Rectangle;
-		
-		// Global objects.
-		/** @private */ private var _rect:Rectangle = FP.rect;
 	}
 }

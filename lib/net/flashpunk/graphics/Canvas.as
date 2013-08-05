@@ -3,6 +3,7 @@
 	import flash.display.Bitmap;
 	import flash.display.BitmapData;
 	import flash.display.Graphics;
+	import flash.filters.BitmapFilter;
 	import flash.geom.ColorTransform;
 	import flash.geom.Matrix;
 	import flash.geom.Point;
@@ -58,6 +59,10 @@
 			_point.x = point.x + x - camera.x * scrollX;
 			_point.y = point.y + y - camera.y * scrollY;
 			
+			_rect.x = _rect.y = 0;
+			_rect.width = _maxWidth;
+			_rect.height = _maxHeight;
+			
 			// render the buffers
 			var xx:int, yy:int, buffer:BitmapData, px:Number = _point.x;
 			while (yy < _refHeight)
@@ -73,7 +78,7 @@
 						_bitmap.bitmapData = buffer;
 						target.draw(_bitmap, _matrix, _tint, blend);
 					}
-					else target.copyPixels(buffer, buffer.rect, _point, null, null, true);
+					else target.copyPixels(buffer, _rect, _point, null, null, true);
 					_point.x += _maxWidth;
 					xx ++;
 				}
@@ -178,7 +183,7 @@
 		 * Draws over a rectangular area of the canvas.
 		 * @param	rect		Drawing rectangle.
 		 * @param	color		Draw color.
-		 * @param	alpha		Draw alpha. If < 1, this rectangle will blend with existing contents of the canvas.
+		 * @param	alpha		Draw alpha. If &lt; 1, this rectangle will blend with existing contents of the canvas.
 		 */
 		public function drawRect(rect:Rectangle, color:uint = 0, alpha:Number = 1):void
 		{
@@ -287,6 +292,14 @@
 			buffer.setPixel32(x, y, color);
 		}
 		
+		public function applyFilter(filter:BitmapFilter):void
+		{
+			for each(var buffer:BitmapData in _buffers)
+			{
+				buffer.applyFilter(buffer, buffer.rect, FP.zero, filter);
+			}
+		}
+		
 		/**
 		 * The tinted color of the Canvas. Use 0xFFFFFF to draw the it normally.
 		 */
@@ -371,7 +384,7 @@
 		/** @private */ private var _refHeight:uint;
 		
 		// Global objects.
-		/** @private */ private var _rect:Rectangle = new Rectangle;
+		/** @protected */ protected var _rect:Rectangle = FP.rect;
 		/** @private */ private var _graphics:Graphics = FP.sprite.graphics;
 	}
 }
