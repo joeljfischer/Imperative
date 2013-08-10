@@ -11,7 +11,6 @@ package com.fande.imperative {
 		
 		public function Main():void {
 			super(640, 480, 60, false);
-			//FP.screen.scale = 2;
 			FP.console.enable();
 		}
 		

@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
-  <OgmoVersion>2.0.0.40</OgmoVersion>
+  <OgmoVersion>2.1.0.6</OgmoVersion>
   <Name>Imperative Project</Name>
   <BackgroundColor A="255" R="192" G="192" B="192" />
   <GridColor A="255" R="0" G="0" B="0" />
@@ -94,14 +94,14 @@
   <EntityDefinitions>
     <EntityDefinition Name="PlayerShip" Limit="1" ResizableX="false" ResizableY="false" Rotatable="true" RotateIncrement="5">
       <Size>
-        <Width>36</Width>
-        <Height>36</Height>
+        <Width>32</Width>
+        <Height>32</Height>
       </Size>
       <Origin>
         <X>0</X>
         <Y>0</Y>
       </Origin>
-      <ImageDefinition DrawMode="Image" ImagePath="..\sprites\player36.png" Tiled="false">
+      <ImageDefinition DrawMode="Image" ImagePath="..\sprites\ship32.png" Tiled="false">
         <RectColor A="255" R="255" G="0" B="0" />
       </ImageDefinition>
       <ValueDefinitions />

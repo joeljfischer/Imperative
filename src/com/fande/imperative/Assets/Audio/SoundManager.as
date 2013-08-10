@@ -23,7 +23,7 @@ package com.fande.imperative.Assets.Audio
 		
 		public static function set currentMusic(music:Sfx):void 
 		{
-			
+			currentMusic = music;
 		}
 		
 		public static function playSound(name:String, type:String, pan:Number:0, callback:Function:null):void 
