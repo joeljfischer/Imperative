@@ -1,6 +1,7 @@
 package com.fande.imperative.Entities 
 {
 	import flash.geom.Point;
+	import net.flashpunk.FP;
 	import net.flashpunk.Entity;
 	import com.fande.imperative.Worlds.GameWorld;
 	
@@ -19,14 +20,14 @@ package com.fande.imperative.Entities
 		private var acceleration:Point;
 		
 		public function MovableEntity(start:Point, facing:Point, maxSpeed:int, maxAcceleration:int, maxDeceleration:int) {
-			this.x = start.x;
-			this.y = start.y;
+			x = start.x;
+			y = start.y;
 			this.maxAcceleration = maxAcceleration;
 			this.maxDeceleration = maxDeceleration;
 			this.maxSpeed = maxSpeed;
 			this.facing = facing;
-			this.velocity:Point = new Point();
-			this.acceleration:Point = new Point();
+			velocity = new Point();
+			acceleration = new Point();
 		}
 		
 		override public function update():void {
@@ -76,16 +77,15 @@ package com.fande.imperative.Entities
 		 * Check the collision for the player character
 		 */
 		protected function updateCollision():void {
-			
 			//X plane collision
 			x += velocity.x * FP.elapsed;
 			if (collide("level", x, y)) {
 				//Moving right
 				if (FP.sign(velocity.x) > 0) {
-					//Stop the vehicle in that direction
+					//Stop the entity in that direction
 					velocity.x = 0;
 					acceleration.x = 0;
-					//Move the ship back to inside the bounds
+					//Move the entity back to inside the bounds
 					x = Math.floor((x + width) / GameWorld.gridSize) * GameWorld.gridSize - width;
 				} else { //Moving left
 					velocity.x = 0;

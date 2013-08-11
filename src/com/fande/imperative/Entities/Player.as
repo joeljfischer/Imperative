@@ -14,7 +14,7 @@ package com.fande.imperative.Entities
 	 * ...
 	 * @author Joel Fischer
 	 */
-	public class Player extends Entity 
+	public class Player extends MovableEntity 
 	{
 		private static const PLAYER_ACCELERATION:int = 360; //Pixels per second
 		private static const PLAYER_DECELERATION:int = 360;
@@ -38,8 +38,6 @@ package com.fande.imperative.Entities
 		 * Object of a player character
 		 * 
 		 * @param	start		The point at which the player character starts
-		 * @param	gridSize	The size of the grid squares
-		 * @param	levelSize	The size of the level rectangle
 		 */
 		public function Player(start:Point) {
 			//Pull in the player's initial X and Y positions
@@ -61,13 +59,12 @@ package com.fande.imperative.Entities
 			//Set the player's hitbox and collision type
 			setHitboxTo(image);
 			type = "player";
+			
+			super(start, facing, PLAYER_MAX_SPEED, PLAYER_ACCELERATION, PLAYER_DECELERATION);
 		}
 		
 		override public function update():void {
 			updateKeys();
-			updateMovement();
-			updateCollision();
-			checkGameBounds();
 			
 			if (isPrimaryFiring) {
 				//Activate the Primary Fire Weapon
@@ -157,7 +154,8 @@ package com.fande.imperative.Entities
 		 * Update the movement of the player based on pressed keys, acceleration, and velocity
 		 */
 		private function updateMovement():void {
-			//Get the current acceleration
+			super.updateMovement();
+			/*//Get the current acceleration
 			acceleration.x = PLAYER_ACCELERATION * facing.x * FP.elapsed;
 			acceleration.y = PLAYER_ACCELERATION * facing.y * FP.elapsed;
 			
@@ -187,7 +185,7 @@ package com.fande.imperative.Entities
 			
 			//Keep the player's velocity clamped within the max speed
 			velocity.x = FP.clamp(velocity.x, -PLAYER_MAX_SPEED, PLAYER_MAX_SPEED);
-			velocity.y = FP.clamp(velocity.y, -PLAYER_MAX_SPEED, PLAYER_MAX_SPEED);
+			velocity.y = FP.clamp(velocity.y, -PLAYER_MAX_SPEED, PLAYER_MAX_SPEED);*/
 			
 			if (isSliding) {
 				
@@ -201,7 +199,7 @@ package com.fande.imperative.Entities
 		/**
 		 * Check the collision for the player character
 		 */
-		private function updateCollision():void {
+		/*override protected function updateCollision():void {
 			
 			//X plane collision
 			x += velocity.x * FP.elapsed;
@@ -235,10 +233,10 @@ package com.fande.imperative.Entities
 					y = Math.floor(y / GameWorld.gridSize) * GameWorld.gridSize + GameWorld.gridSize;
 				}
 			}
-		}
+		}*/
 		
-		private function checkGameBounds():void {
+		/*private function checkGameBounds():void {
 			FP.clampInRect(this, 0, 0, GameWorld.levelSize.x - width, GameWorld.levelSize.y - height);
-		}
+		}*/
 	}
 }
