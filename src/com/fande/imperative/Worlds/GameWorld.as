@@ -21,13 +21,19 @@ package com.fande.imperative.Worlds
 		private var _level:Level;
 		private var _player:Player;
 		
+		private static var _levelSize:Point;
+		private static var _gridSize:uint;
+		
 		public function GameWorld() {
 			trace("GameWorld Constructor");
 		}
 		
 		override public function begin():void {
 			_level = Level(add(new Level(TileMaps.XML_LEVEL)));
-			_player = new Player(level.getPlayerStart(), level.gridSize, new Point(level.width, level.height));
+			_levelSize = new Point(level.width, level.height);
+			_gridSize = level.gridSize;
+			
+			_player = new Player(level.getPlayerStart());
 			add(player);
 			
 			super.begin();
@@ -36,10 +42,18 @@ package com.fande.imperative.Worlds
 		override public function update():void {
 			super.update();
 			
-			// Camera follows the player, clamp it in the bounds of the game
+			// Camera follows the player, clamp the camera in the bounds of the game
 			camera.x = player.x - FP.halfWidth;
 			camera.y = player.y - FP.halfHeight;
 			FP.clampInRect(camera, 0, 0, level.width - FP.width, level.height - FP.height);
+		}
+		
+		public static function get levelSize():Point {
+			return _levelSize;
+		}
+		
+		public static function get gridSize():uint {
+			return _gridSize;
 		}
 		
 		public function get level():Level {

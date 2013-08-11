@@ -20,8 +20,6 @@ package com.fande.imperative.Entities.Level
 		private var grid:Grid;
 		
 		private var _levelName:String;
-		private var _levelWidth:uint;
-		private var _levelHeight:uint;
 		private var _tileSize:uint;
 		private var _gridSize:uint;
 		
@@ -88,14 +86,6 @@ package com.fande.imperative.Entities.Level
 		
 		public function get levelName():String {
 			return _levelName;
-		}
-		
-		public function get levelWidth():uint {
-			return _levelWidth;
-		}
-		
-		public function get levelHeight():uint {
-			return _levelHeight;
 		}
 		
 		public function get tileSize():uint {

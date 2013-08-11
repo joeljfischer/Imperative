@@ -23,11 +23,8 @@ package com.fande.imperative.Entities
 		private var image:Image;
 		
 		private var facing:Point;
-		private var _velocity:Point;
-		private var _acceleration:Point;
-		
-		private var gridSize:uint;
-		private var levelSize:Point;
+		private var velocity:Point;
+		private var acceleration:Point;
 		
 		private var isBoosting:Boolean;
 		private var isSliding:Boolean;
@@ -44,21 +41,15 @@ package com.fande.imperative.Entities
 		 * @param	gridSize	The size of the grid squares
 		 * @param	levelSize	The size of the level rectangle
 		 */
-		public function Player(start:Point, gridSize:uint, levelSize:Point)
-		{
+		public function Player(start:Point) {
 			//Pull in the player's initial X and Y positions
 			this.x = start.x;
 			this.y = start.y;
 			
-			//Pull in the size of the current level and collision geometry, this is
-			//needed for level bounds and collision, respectively
-			this.levelSize = levelSize;
-			this.gridSize = gridSize;
-			
 			//Create a movement attributes
 			facing = new Point();
-			_velocity = new Point();
-			_acceleration = new Point();
+			velocity = new Point();
+			acceleration = new Point();
 			
 			//Pull the player's graphic from the assets
 			image = new Image(Sprites.PLAYER_IMAGE);
@@ -76,7 +67,7 @@ package com.fande.imperative.Entities
 			updateKeys();
 			updateMovement();
 			updateCollision();
-			checkBounds();
+			checkGameBounds();
 			
 			if (isPrimaryFiring) {
 				//Activate the Primary Fire Weapon
@@ -167,36 +158,36 @@ package com.fande.imperative.Entities
 		 */
 		private function updateMovement():void {
 			//Get the current acceleration
-			_acceleration.x = PLAYER_ACCELERATION * facing.x * FP.elapsed;
-			_acceleration.y = PLAYER_ACCELERATION * facing.y * FP.elapsed;
+			acceleration.x = PLAYER_ACCELERATION * facing.x * FP.elapsed;
+			acceleration.y = PLAYER_ACCELERATION * facing.y * FP.elapsed;
 			
 			//If the player has released the Left/Right Keys
 			if (facing.x == 0) {
 				//And the Player is travelling in the x directions
-				if (FP.sign(_velocity.x) > 0) {
+				if (FP.sign(velocity.x) > 0) {
 					//Decelerate the player towards 0 velocity
-					_velocity.x = FP.approach(_velocity.x, 0, (PLAYER_DECELERATION * FP.elapsed));
-				} else if (FP.sign(_velocity.x) < 0) {
-					_velocity.x = FP.approach(_velocity.x, 0, (PLAYER_DECELERATION * FP.elapsed));
+					velocity.x = FP.approach(velocity.x, 0, (PLAYER_DECELERATION * FP.elapsed));
+				} else if (FP.sign(velocity.x) < 0) {
+					velocity.x = FP.approach(velocity.x, 0, (PLAYER_DECELERATION * FP.elapsed));
 				}
 			} else { //Player is pressing the button
 				//Accelerate the player in the X direction
-				_velocity.x += _acceleration.x;
+				velocity.x += acceleration.x;
 			}
 			
 			if (facing.y == 0) {
-				if (FP.sign(_velocity.y) > 0) {
-					_velocity.y = FP.approach(_velocity.y, 0, (PLAYER_DECELERATION * FP.elapsed));
-				} else if (FP.sign(_velocity.y) < 0) {
-					_velocity.y = FP.approach(_velocity.y, 0, (PLAYER_DECELERATION * FP.elapsed));
+				if (FP.sign(velocity.y) > 0) {
+					velocity.y = FP.approach(velocity.y, 0, (PLAYER_DECELERATION * FP.elapsed));
+				} else if (FP.sign(velocity.y) < 0) {
+					velocity.y = FP.approach(velocity.y, 0, (PLAYER_DECELERATION * FP.elapsed));
 				}
 			} else {
-				_velocity.y += _acceleration.y;
+				velocity.y += acceleration.y;
 			}
 			
 			//Keep the player's velocity clamped within the max speed
-			_velocity.x = FP.clamp(_velocity.x, -PLAYER_MAX_SPEED, PLAYER_MAX_SPEED);
-			_velocity.y = FP.clamp(_velocity.y, -PLAYER_MAX_SPEED, PLAYER_MAX_SPEED);
+			velocity.x = FP.clamp(velocity.x, -PLAYER_MAX_SPEED, PLAYER_MAX_SPEED);
+			velocity.y = FP.clamp(velocity.y, -PLAYER_MAX_SPEED, PLAYER_MAX_SPEED);
 			
 			if (isSliding) {
 				
@@ -213,45 +204,41 @@ package com.fande.imperative.Entities
 		private function updateCollision():void {
 			
 			//X plane collision
-			x += _velocity.x * FP.elapsed;
+			x += velocity.x * FP.elapsed;
 			if (collide("level", x, y)) {
 				//Moving right
-				if (FP.sign(_velocity.x) > 0) {
+				if (FP.sign(velocity.x) > 0) {
 					//Stop the vehicle in that direction
-					_velocity.x = 0;
-					_acceleration.x = 0;
+					velocity.x = 0;
+					acceleration.x = 0;
 					//Move the ship back to inside the bounds
-					x = Math.floor((x + width) / gridSize) * gridSize - width;
+					x = Math.floor((x + width) / GameWorld.gridSize) * GameWorld.gridSize - width;
 				} else { //Moving left
-					_velocity.x = 0;
-					_acceleration.x = 0;
-					x = Math.floor(x / gridSize) * gridSize + gridSize;
+					velocity.x = 0;
+					acceleration.x = 0;
+					x = Math.floor(x / GameWorld.gridSize) * GameWorld.gridSize + GameWorld.gridSize;
 				}
 			}
 			
 			//Y plane collision
-			y += _velocity.y * FP.elapsed;
+			y += velocity.y * FP.elapsed;
 			if (collide("level", x, y)) {
 				//Moving down
-				if (FP.sign(_velocity.y) > 0) {
-					_velocity.y = 0;
-					_acceleration.y = 0;
-					y = Math.floor((y + height) / gridSize) * gridSize - height;
+				if (FP.sign(velocity.y) > 0) {
+					velocity.y = 0;
+					acceleration.y = 0;
+					y = Math.floor((y + height) / GameWorld.gridSize) * GameWorld.gridSize - height;
 					
 				} else { //Moving up
-					_velocity.y = 0;
-					_acceleration.y = 0;
-					y = Math.floor(y / gridSize) * gridSize + gridSize;
+					velocity.y = 0;
+					acceleration.y = 0;
+					y = Math.floor(y / GameWorld.gridSize) * GameWorld.gridSize + GameWorld.gridSize;
 				}
 			}
 		}
 		
-		/**
-		 * Check the player character against the bounds of the level
-		 */
-		private function checkBounds():void {
-			//Clamp the ship inside the bounds of the level
-			FP.clampInRect(this, 0, 0, levelSize.x - width, levelSize.y - height);
+		private function checkGameBounds():void {
+			FP.clampInRect(this, 0, 0, GameWorld.levelSize.x - width, GameWorld.levelSize.y - height);
 		}
 	}
 }
