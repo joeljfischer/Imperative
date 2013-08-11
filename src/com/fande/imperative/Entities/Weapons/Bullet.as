@@ -6,6 +6,7 @@ package com.fande.imperative.Entities.Weapons {
 	import net.flashpunk.graphics.Image;
 	
 	import com.fande.imperative.Entities.MovableEntity;
+	import com.fande.imperative.Assets.Gfx.Sprites;
 	
 	/**
 	 * ...
@@ -24,14 +25,20 @@ package com.fande.imperative.Entities.Weapons {
 		public function Bullet(startPosition:Point, startAngle:Point) {
 			x = startPosition.x;
 			y = startPosition.y;
+			facing = new Point();
+			maxAcceleration = BULLET_ACCELERATION;
+			maxDeceleration = BULLET_ACCELERATION;
+			maxSpeed = BULLET_MAX_SPEED;
 			
-			super(startPosition, 
+			image = new Image(Sprites.PLAYER_BULLET);
+			this.graphic = image;
+			setHitboxTo(image);
+			
+			type = "playerBullet";
 		}
 		
 		override public function update():void {
-			
+			super.update();
 		}
-		
 	}
-
 }

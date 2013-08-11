@@ -1,5 +1,6 @@
 package com.fande.imperative.Entities 
 {
+	import com.fande.imperative.Entities.Weapons.Bullet;
 	import com.fande.imperative.Worlds.GameWorld;
 	import flash.geom.Point;
 	import net.flashpunk.Entity;
@@ -46,8 +47,6 @@ package com.fande.imperative.Entities
 			
 			//Create a movement attributes
 			facing = new Point();
-			velocity = new Point();
-			acceleration = new Point();
 			
 			//Pull the player's graphic from the assets
 			image = new Image(Sprites.PLAYER_IMAGE);
@@ -66,6 +65,8 @@ package com.fande.imperative.Entities
 			
 			if (isPrimaryFiring) {
 				//Activate the Primary Fire Weapon
+				var b:Bullet = new Bullet(new Point(halfWidth, y), facing);
+				FP.world.add(b);
 			}
 			
 			if (isSecondaryFiring) {

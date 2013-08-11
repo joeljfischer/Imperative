@@ -9,7 +9,7 @@ package com.fande.imperative.Entities
 	 * ...
 	 * @author ...
 	 */
-	internal class MovableEntity extends Entity
+	public class MovableEntity extends Entity
 	{
 		public var maxAcceleration:int;
 		public var maxDeceleration:int;
