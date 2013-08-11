@@ -11,21 +11,32 @@ package com.fande.imperative.Entities
 	 */
 	internal class MovableEntity extends Entity
 	{
-		private var maxAcceleration:int;
-		private var maxDeceleration:int;
-		private var maxSpeed:int;
+		public var maxAcceleration:int;
+		public var maxDeceleration:int;
+		public var maxSpeed:int;
 		
-		private var facing:Point;
-		private var velocity:Point;
-		private var acceleration:Point;
+		public var facing:Point;
+		public var velocity:Point;
+		public var acceleration:Point;
 		
-		public function MovableEntity(start:Point, facing:Point, maxSpeed:int, maxAcceleration:int, maxDeceleration:int) {
-			x = start.x;
-			y = start.y;
+		public function MovableEntity(start:Point = null, facing:Point = null, maxSpeed:int = 0, maxAcceleration:int = 0, maxDeceleration:int = 0) {
+			if (start) {
+				x = start.x;
+				y = start.y;
+			} else {
+				x = y = 0;
+			}
+			
 			this.maxAcceleration = maxAcceleration;
 			this.maxDeceleration = maxDeceleration;
 			this.maxSpeed = maxSpeed;
-			this.facing = facing;
+			
+			if (facing) {
+				this.facing = facing;
+			} else {
+				this.facing = new Point();
+			}
+			
 			velocity = new Point();
 			acceleration = new Point();
 		}

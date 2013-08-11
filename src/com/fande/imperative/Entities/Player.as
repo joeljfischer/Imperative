@@ -22,10 +22,6 @@ package com.fande.imperative.Entities
 		
 		private var image:Image;
 		
-		private var facing:Point;
-		private var velocity:Point;
-		private var acceleration:Point;
-		
 		private var isBoosting:Boolean;
 		private var isSliding:Boolean;
 		
@@ -44,6 +40,10 @@ package com.fande.imperative.Entities
 			this.x = start.x;
 			this.y = start.y;
 			
+			maxAcceleration = PLAYER_ACCELERATION;
+			maxDeceleration = PLAYER_DECELERATION;
+			maxSpeed = PLAYER_MAX_SPEED;
+			
 			//Create a movement attributes
 			facing = new Point();
 			velocity = new Point();
@@ -59,8 +59,6 @@ package com.fande.imperative.Entities
 			//Set the player's hitbox and collision type
 			setHitboxTo(image);
 			type = "player";
-			
-			super(start, facing, PLAYER_MAX_SPEED, PLAYER_ACCELERATION, PLAYER_DECELERATION);
 		}
 		
 		override public function update():void {
