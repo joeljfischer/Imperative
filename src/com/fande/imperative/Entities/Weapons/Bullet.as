@@ -25,7 +25,7 @@ package com.fande.imperative.Entities.Weapons {
 		public function Bullet(startPosition:Point, startAngle:Point) {
 			x = startPosition.x;
 			y = startPosition.y;
-			facing = new Point();
+			facing = new Point(0, -1);
 			maxAcceleration = BULLET_ACCELERATION;
 			maxDeceleration = BULLET_ACCELERATION;
 			maxSpeed = BULLET_MAX_SPEED;

@@ -19,6 +19,8 @@ package com.fande.imperative.Entities
 		public var velocity:Point;
 		public var acceleration:Point;
 		
+		public var keepInBounds:Boolean;
+		
 		public function MovableEntity(start:Point = null, facing:Point = null, maxSpeed:int = 0, maxAcceleration:int = 0, maxDeceleration:int = 0) {
 			if (start) {
 				x = start.x;
@@ -44,7 +46,11 @@ package com.fande.imperative.Entities
 		override public function update():void {
 			updateMovement();
 			updateCollision();
-			clampInGameBounds();
+			if (keepInBounds) {
+				clampInGameBounds();
+			} else {
+				destroyIfOutOfBounds();
+			}
 		}
 		
 		/**
@@ -124,6 +130,10 @@ package com.fande.imperative.Entities
 		
 		protected function clampInGameBounds():void {
 			FP.clampInRect(this, 0, 0, GameWorld.levelSize.x - this.width, GameWorld.levelSize.y - this.height);
+		}
+		
+		protected function destroyIfOutOfBounds():void {
+			
 		}
 	}
 }
